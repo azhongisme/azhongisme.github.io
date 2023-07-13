@@ -182,31 +182,7 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br>  具体代码如下</p>
-<pre><code class="cpp">include&lt;bits/stdc++.h&gt;
-int main()&#123;
-  int n;
-  std::cin&gt;&gt;n;
-  std::vector&lt;int&gt;a(n);
-  for(int i = 0;i&lt;n;i++&gt;)&#123;
-      std::cin&gt;&gt;a[i];
-  &#125;
-  for (int i = 1; i &lt; n; i++) &#123;
-      int key = a[i];
-      int j = i - 1;
-      while (j &gt;= 0 &amp;&amp; a[j] &gt; key) &#123;
-          a[j + 1] = a[j];
-          j--;
-      &#125;
-      a[j + 1] = key;
-  &#125;
-  for (int i = 0; i &lt; n; i++) &#123;
-      std::cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
-  &#125;
-&#125;
-</code></pre>
-<p>  算法分析 ：<br>          上述代码实现的升序排序，假设最糟糕的情况为原数组为降序，那么需要计算n(n+1)&#x2F;2次<br>          因此时间复杂度为O(n²)</p>
-
+            <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br>
             
         </div>
     </div>
@@ -219,7 +195,7 @@ int main()&#123;
         
         <span class="tag">
             
-            <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
+            <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
         </span>
         
     </div>
