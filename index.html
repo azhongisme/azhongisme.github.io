@@ -165,6 +165,70 @@
         
 
 <div class="post">
+    <a href="/2023/07/13/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E4%BA%8C%E7%AB%A0/">
+        <h2 class="post-title">算法导论第二章</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/7/13
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br>  具体代码如下</p>
+<pre><code class="cpp">include&lt;bits/stdc++.h&gt;
+int main()&#123;
+  int n;
+  std::cin&gt;&gt;n;
+  std::vector&lt;int&gt;a(n);
+  for(int i = 0;i&lt;n;i++&gt;)&#123;
+      std::cin&gt;&gt;a[i];
+  &#125;
+  for (int i = 1; i &lt; n; i++) &#123;
+      int key = a[i];
+      int j = i - 1;
+      while (j &gt;= 0 &amp;&amp; a[j] &gt; key) &#123;
+          a[j + 1] = a[j];
+          j--;
+      &#125;
+      a[j + 1] = key;
+  &#125;
+  for (int i = 0; i &lt; n; i++) &#123;
+      std::cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+  &#125;
+&#125;
+算法分析 ：
+        上述代码实现的升序排序，假设最糟糕的情况为原数组为降序，那么需要计算n(n+1)/2次
+        因此时间复杂度为O(n²)
+</code></pre>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
+        </span>
+        
+    </div>
+    <a href="/2023/07/13/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E4%BA%8C%E7%AB%A0/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
     <a href="/2023/07/12/My-New-Post/">
         <h2 class="post-title">最短路算法</h2>
     </a>
