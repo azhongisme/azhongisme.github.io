@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>深度优先搜索 | Azhong&#39;s blog</title>
+        <meta name="author" content="a zhong" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/favicon-32x32.png" />
+        <script src="https://cdn.staticfile.org/vue/3.2.47/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.3.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <nav id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <div id="desktop-menu">
+        <a class="title" href="/">
+            <span>AZHONG&#39;S BLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;AZHONG&#39;S BLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </div>
+</nav>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <transition name="into">
+                <div id="main" v-show="!loading">
+                    <div class="article">
+    <div>
+        <h1>深度优先搜索</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/7/17
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>深度优先搜索所使用的策略就像其名字所隐含的：只要可能，就尽量深入<br>在搜索算法中，DFS(深度优先搜索)常常指利用递归函数方便地实现暴力枚举的算法，与图论中的DFS算法<br>有一定相似之处，但并不完全相同。深度优先搜索一般使用栈来实现。</p>
+<span id="more"></span>
+<p>八皇后问题</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int qipan[15][15];
+int n;
+bool st1[100],st2[100],st3[100];//1列，2左对角线，3右对角线
+int ans = 0;
+int a[100];
+void dfs(int u)&#123;
+    if(u==n)&#123;
+        ans++;
+        if(ans&lt;=3)&#123;
+            for(int i = 0;i&lt;n;i++)&#123;
+                cout&lt;&lt;a[i]&lt;&lt;&quot; &quot;;
+            &#125;
+            cout&lt;&lt;&quot;\n&quot;;
+        &#125;
+    &#125;
+    for(int i = 1;i&lt;=n;i++)&#123;
+        //由于对角线是斜线，因此可以看成y = x + b，此处的+n是为了下标保证为正值
+        if(!st1[i]&amp;&amp;!st2[i-u+n]&amp;&amp;!st3[i+u])&#123;
+            a[u] = i;
+            st1[i] = st2[i-u+n] = st3[i+u] = 1;
+            dfs(u+1);
+            st1[i] = st2[i-u+n] = st3[i+u] = 0;
+        &#125;
+    &#125;
+&#125;
+int main()&#123;
+    cin&gt;&gt;n;
+    dfs(0);
+    cout&lt;&lt;ans;
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
+<p>全排列问题没什么好说的，就是遍历与回溯</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int a[11];
+int m;
+bool st[11];
+void dfs(int n)&#123;
+    if(n==m)&#123;
+        for(int i = 0;i&lt;n;i++)&#123;
+            cout&lt;&lt;setw(5)&lt;&lt;a[i];
+        &#125;
+        cout&lt;&lt;&quot;\n&quot;;
+    &#125;
+    for(int i = 1;i&lt;=m;i++)&#123;
+        if(!st[i])&#123;
+            a[n] = i;
+            st[i] = true;
+            dfs(n+1);
+            st[i] = false;
+        &#125;
+        
+    &#125;
+&#125;
+int main()&#123;
+    cin&gt;&gt;m;
+    dfs(0);
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
+<p>[NOIP2000 提高组] 单词接龙</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+const int maxn = 50;
+int n;
+int ans = 0;
+string word[maxn];
+string beginn;
+//used数组判断该单词使用次数，小于2可以使用
+int used[maxn];
+//判断b是否能接到a的后面，k表示重叠部分的长度
+bool check(string a,string b,int k)&#123;
+    int len = a.length();
+    for(int i = 0;i&lt;k;i++)&#123;
+        if(a[len-k+i]!=b[i]) return false;
+    &#125;
+    return true;
+&#125;
+//接龙
+void add(string &amp;a,string b,int k)&#123;
+    for(int i = k;i&lt;b.length();i++) a+=b[i];
+&#125;
+void dfs(string now)&#123;
+    int x = now.length();
+    ans = max(x,ans);
+    for(int i = 0;i&lt;n;i++)&#123;
+        if(used[i]&gt;=2)&#123;
+            continue;
+        &#125;
+        int len = word[i].length();
+        for(int j = 1;j&lt;=len;j++)&#123;
+            if(check(now,word[i],j))&#123;
+                used[i]++;
+                string tmp = now;
+                add(tmp,word[i],j);
+                dfs(tmp);
+                used[i]--;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+int main()&#123;
+    cin&gt;&gt;n;
+    for(int i = 0;i&lt;n;i++) cin&gt;&gt;word[i];
+    cin&gt;&gt;beginn;
+    dfs(beginn);
+    cout&lt;&lt;ans;
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
+<p>div4 871 _D<br>题目大意，给两个整数n，m，判断n&#x2F;3或n&#x2F;3*2一直下去能否最终等于m</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+const int N = 1010;
+bool flag = false;
+void dfs(int n,int m)&#123;
+    if(n==m)&#123;
+        flag = true;
+        return;
+    &#125;
+    if(n&lt;m) return;
+    if(n%3) return;
+    dfs(n/3,m);
+    dfs(n/3*2,m);
+&#125;
+//简化版本的dfs
+void dfs1(int n,int m)&#123;
+    return n==m ? 1 : (n&lt;m||n%3) ? 0 : (dfs(n/3)||dfs(n/3*2));
+&#125;
+int main()&#123;
+    int t;
+    cin&gt;&gt;t;
+    while(t--)&#123;
+        int n,m;
+        cin&gt;&gt;n&gt;&gt;m;
+        dfs(n,m);
+        if(flag) &#123;
+            cout&lt;&lt;&quot;yes\n&quot;;
+            flag = false;
+            &#125;
+        else cout&lt;&lt;&quot;no\n&quot;;
+    &#125;
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
+<p>E. The Lakes<br>题目大意，一个n*m的矩阵，求不为0的连通块最大之和<br>分析：这道题用BFS更好一点，但这里是DFS,那就要DFS写了</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int dx[5]=&#123;0,0,0,1,-1&#125;;
+int dy[5]=&#123;0,1,-1,0,0&#125;;
+int n,m;
+vector&lt;int&gt; ans(2002000);
+vector&lt;vector&lt;int&gt; &gt; a(2010,vector&lt;int&gt;(2010));
+//vis数组判断该点是否搜过
+vector&lt;vector&lt;int&gt; &gt; vis(2010,vector&lt;int&gt;(2010));
+//cnt表示第cnt个连通块
+void dfs(int x, int y,int cnt)
+&#123;
+    if(vis[x][y]||x&lt;0||x&gt;=n||y&lt;0||y&gt;=m||a[x][y]==0)
+    &#123;
+        return;
+    &#125;
+    vis[x][y]=1;
+    ans[cnt]+=a[x][y];
+    for(int i=1;i&lt;=4;i++)
+    &#123;
+        int x1=x+dx[i];
+        int y1=y+dy[i];
+        //是否越界
+        if(x1&lt;0||x1&gt;=n||y1&lt;0||y1&gt;=m)continue;
+        dfs(x1,y1,cnt);
+    &#125;
+    return;
+&#125;
+void solve() &#123;
+    cin&gt;&gt;n&gt;&gt;m;
+    for(int i=0;i&lt;n;i++)
+    &#123;
+        for(int j=0;j&lt;m;j++)
+        &#123;
+            vis[i][j]=0;
+            a[i][j]=0;
+        &#125;
+    &#125;
+    int cnt=-1;
+    for(int i=0;i&lt;n;i++)
+    &#123;
+        for(int j=0;j&lt;m;j++)
+        &#123;
+            cin&gt;&gt;a[i][j];
+        &#125;
+    &#125;
+    for(int i=0;i&lt;n;i++)
+    &#123;
+        for(int j=0;j&lt;m;j++)
+        &#123;
+            //该点不为0，且未被用过
+            if(a[i][j]&amp;&amp;!vis[i][j])
+            &#123;
+                cnt++;
+                dfs(i,j,cnt);
+            &#125;
+        &#125;
+    &#125;
+    int max1=0;
+    for(int i=0;i&lt;=cnt;i++)
+    &#123;
+        max1=max(max1,ans[i]);
+        ans[i]=0;
+    &#125;
+    cout&lt;&lt;max1&lt;&lt;endl;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Azhong&#39;s blog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;a zhong
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+                </div>
+            </transition>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+
+
+
+
+        
+    </body>
+</html>
