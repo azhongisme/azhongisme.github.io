@@ -166,7 +166,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
+                <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
             </span>
             
         </span>
@@ -391,6 +391,61 @@ void solve() &#123;
         ans[i]=0;
     &#125;
     cout&lt;&lt;max1&lt;&lt;endl;
+&#125;
+</code></pre>
+<p>油滴扩展<br>分析：需要判断该点是否在已有点之内，具体半径求法</p>
+<pre><code class="cpp">double _ = min(abs(x[i]-xa),abs(x[i]-xb));
+double __ = min(abs(y[i]-yb),abs(y[i]-ya));
+r[i] = min(_,__);
+for(int j = 1;j&lt;=n;j++)&#123;
+    if(s[j]&amp;&amp;i!=j)&#123;
+        double d = (x[i]-x[j])*(x[i]-x[j]) + (y[i]-y[j])*(y[i]-y[j]);
+        d = sqrt(d);
+        r[i] = min(r[i],max(d-r[j],0.0));//d-r[j]&lt;=说明点在已有点内部因此不用考虑，半径直接为0
+        &#125;
+&#125;
+</code></pre>
+<p>完整代码如下</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+const int maxn=10;
+const double PI=3.1415926535;
+bool s[maxn];
+double x[maxn],y[maxn],r[maxn],xa,ya,xb,yb,ansmax;
+int n;
+void dfs(int k,double sum)&#123;
+    if(k&gt;n)&#123;
+        ansmax = max(ansmax,sum);
+        return;
+    &#125;
+    for(int i = 1;i&lt;=n;i++)&#123;
+        if(!s[i])&#123;
+            s[i] = 1;
+            double _ = min(abs(x[i]-xa),abs(x[i]-xb));
+            double __ = min(abs(y[i]-yb),abs(y[i]-ya));
+            r[i] = min(_,__);
+            for(int j = 1;j&lt;=n;j++)&#123;
+                if(s[j]&amp;&amp;i!=j)&#123;
+                    double d = (x[i]-x[j])*(x[i]-x[j]) + (y[i]-y[j])*(y[i]-y[j]);
+                    d = sqrt(d);
+                    r[i] = min(r[i],max(d-r[j],0.0));
+                &#125;
+            &#125;
+            dfs(k+1,sum+r[i]*r[i]*PI);
+            s[i] = 0;
+            r[i] = 0;
+        &#125;
+    &#125;
+&#125;
+int main()&#123;
+    double ss;
+    cin&gt;&gt;n;
+    cin&gt;&gt;xa&gt;&gt;ya&gt;&gt;xb&gt;&gt;yb;
+    ss = abs(xa-xb)*abs(ya-yb);
+    for(int i = 1;i&lt;=n;i++) cin&gt;&gt;x[i]&gt;&gt;y[i];
+    dfs(1,0);
+    cout&lt;&lt;(int)(ss-ansmax+0.5);
+    system(&quot;pause&quot;);
 &#125;
 </code></pre>
 
