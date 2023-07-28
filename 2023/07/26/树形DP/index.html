@@ -166,7 +166,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
+                <a href="/tags/algorithm/" style="color: #ffa2c4">algorithm</a>
             </span>
             
         </span>
@@ -174,7 +174,7 @@
     </div>
     
     <div class="content" v-pre>
-        <p>img: <img src="/.com//%5Cmedias%5C%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230722121923.jpg"><br>树形DP其实和普通的DP问题大差不差，都涉及两个方面：状态表示和状态转移方程，只是运用到了树这种数据结构，<br>其中状态转移一般通过DFS或者BFS来实现。<br>下面以两道例题为例</p>
+        <p>树形DP其实和普通的DP问题大差不差，都涉及两个方面：状态表示和状态转移方程，只是运用到了树这种数据结构，<br>其中状态转移一般通过DFS或者BFS来实现。<br>下面以几道例题为例</p>
 <span id="more"></span>
 <p>Ural 大学有 N名职员，编号为 1∼N。</p>
 <p>他们的关系就像一棵以校长为根的树，父节点就是子节点的直接上司。</p>
@@ -225,6 +225,129 @@ int main()&#123;
     &#125;
     dfs(root);
     cout&lt;&lt;max(f[root][0],f[root][1]);
+&#125;
+</code></pre>
+<p>鲍勃喜欢玩电脑游戏，特别是战略游戏，但有时他找不到解决问题的方法，这让他很伤心。</p>
+<p>现在他有以下问题。</p>
+<p>他必须保护一座中世纪城市，这条城市的道路构成了一棵树。</p>
+<p>每个节点上的士兵可以观察到所有和这个点相连的边。</p>
+<p>他必须在节点上放置最少数量的士兵，以便他们可以观察到所有的边。</p>
+<p>你能帮助他吗？</p>
+<p>输入格式<br>输入包含多组测试数据，每组测试数据用以描述一棵树。</p>
+<p>对于每组测试数据，第一行包含整数 N<br>，表示树的节点数目。</p>
+<p>接下来 N<br> 行，每行按如下方法描述一个节点。</p>
+<p>节点编号：(子节点数目) 子节点 子节点 …</p>
+<p>节点编号从 0到 N−1，每个节点的子节点数量均不超过 10，每个边在输入数据中只出现一次。</p>
+<p>输出格式<br>对于每组测试数据，输出一个占据一行的结果，表示最少需要的士兵数。</p>
+<p>数据范围<br>0&lt;N≤1500,一个测试点所有 N相加之和不超过 300650。</p>
+<pre><code class="cpp">
+/*分析：这道题只需要满足每条边最少有一个端点上有士兵即可
+状态表示f[u][0] 以u为根的子数且u点没有士兵，f[u][1]以u为根的子树且u有士兵
+状态转移:f[u][0] += f[j][1] f[u][1] += min(f[j][0],f[j][1]) */
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 1510;
+vector&lt;vector&lt;int&gt;&gt;g(N);
+int n;
+int f[N][2];
+bool st[N];
+void dfs(int u)&#123;
+    f[u][1] = 1;
+    for(int i = 0;i&lt;g[u].size();i++)&#123;
+        int j = g[u][i];
+        dfs(j);
+        f[u][0] += f[j][1];
+        f[u][1] += min(f[j][0],f[j][1]);
+    &#125;
+&#125;
+
+int main()&#123;
+    while(scanf(&quot;%d&quot;,&amp;n)!=EOF)&#123;
+        memset(st,0,sizeof(st));
+        memset(f,0,sizeof(f));
+        for(int i = 0;i&lt;n;i++) g[i].clear();
+        for(int i = 0;i&lt;n;i++)&#123;
+            int id,cnt;
+            scanf(&quot;%d:(%d) &quot;,&amp;id,&amp;cnt);
+            while(cnt--)&#123;
+                int a;
+                cin&gt;&gt;a;
+                g[id].push_back(a);
+                st[a] = 1;
+            &#125;
+        &#125;
+        int root = 0;
+        while(st[root])&#123;
+            root++;
+        &#125;
+
+        dfs(root);
+
+        cout&lt;&lt;min(f[root][1],f[root][0])&lt;&lt;&quot;\n&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>太平王世子事件后，陆小凤成了皇上特聘的御前一品侍卫。<br>皇宫以午门为起点，直到后宫嫔妃们的寝宫，呈一棵树的形状，某些宫殿间可以互相望见。大内保卫森严，三步一岗，五步一哨，每个宫殿都要有人全天候看守，<br>在不同的宫殿安排看守所需的费用不同。<br>可是陆小凤手上的经费不足，无论如何也没法在每个宫殿都安置留守侍卫。<br>帮助陆小凤布置侍卫，在看守全部宫殿的前提下，使得花费的经费最少。</p>
+<p>输入描述:<br>输入中数据描述一棵树，描述如下：<br>第一行n，表示树中结点的数目。<br>第二行至第n+1行，每行描述每个宫殿结点信息，依次为：该宫殿结点标号,在该宫殿安置侍卫所需的经费k，该边的儿子数m，接下来m个数，分别是这个节点的m个儿子的标号<br>对于一个n个结点的树，结点标号在1到n之间，且标号不重复。</p>
+<p>输出描述:<br>输出最少的经费</p>
+<p>示例1<br>输入</p>
+<p>6<br>1 30 3 2 3 4<br>2 16 2 5 6<br>3 5 0<br>4 4 0<br>5 11 0<br>6 5 0<br>输出<br>25</p>
+<p>链接：<a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/problem/50510">https://ac.nowcoder.com/acm/problem/50510</a><br>来源：牛客网</p>
+<pre><code class="cpp">/*该题与上一题不同的是每个点所占的权重不同，因此不能只根据一条至少有一个端点有士兵得到最后的结果
+该题存在可能一条边两个点都没有士兵占据
+状态表示 f[u][0] u点没有士兵可以由父节点看到 f[u][1] u点没有士兵可以由子节点看到 f[u][2]该点有士兵
+状态转移 f[u][0] += min(f[j][1],f[j][2]) f[j][1]表示u的子节点可以被子节点的子节点看到
+        f[u][2] += min(f[j][2],min(f[j][0],f[j][1]))
+        f[u][1] = min(f[u][1],sum+f[j][2]-min(f[j][1],f[j][2])) sum = f[u][0]
+*/
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 1510;
+int f[N][3];
+vector&lt;vector&lt;int&gt;&gt;g(N);
+int n;
+bool st[N];
+int w[N];
+
+void dfs(int u)&#123;
+    f[u][2] = w[u];
+    for(int i = 0;i&lt;g[u].size();i++)&#123;
+        int j = g[u][i];
+        dfs(j);
+        f[u][0] += min(f[j][1],f[j][2]);
+        f[u][2] += min(f[j][2],min(f[j][0],f[j][1]));
+    &#125;
+    f[u][1] = 1e9;
+    for(int i = 0;i&lt;g[u].size();i++)&#123;
+        int j = g[u][i];
+        f[u][1] = min(f[u][1],f[j][2]+f[u][0]-min(f[j][1],f[j][2]));
+    &#125;
+&#125;
+
+
+int main()&#123;
+    cin&gt;&gt;n;
+    for(int i = 0;i&lt;n;i++)&#123;
+        int id,cnt,cost;
+        cin&gt;&gt;id&gt;&gt;cost&gt;&gt;cnt;
+        w[id] = cost;
+        while(cnt--)&#123;
+            int a;
+            cin&gt;&gt;a;
+            g[id].push_back(a);
+            st[a] = 1;
+        &#125;
+    &#125;
+    int root = 1;
+    while(st[root])&#123;
+        root++;
+    &#125;
+    dfs(root);
+    //由于根节点没有父节点，所以没有f[root][1]
+    cout&lt;&lt;min(f[root][1],f[root][2]);
+    system(&quot;pause&quot;);
 &#125;
 </code></pre>
 
