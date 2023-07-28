@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="Chinese">
     <head>
         <meta charset="utf-8" />
-        <title>stl | Azhong&#39;s blog</title>
-        <meta name="author" content="a zhong" />
+        <title>树形DP | 阿中のblog</title>
+        <meta name="author" content="阿中" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
@@ -54,7 +54,7 @@
             <nav id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
     <div id="desktop-menu">
         <a class="title" href="/">
-            <span>AZHONG&#39;S BLOG</span>
+            <span>阿中のBLOG</span>
         </a>
         
         <a href="/">
@@ -86,7 +86,7 @@
     <div id="mobile-menu">
         <div class="title" @click="showMenuItems = !showMenuItems">
             <i class="fa-solid fa-bars fa-fw"></i>
-            <span>&emsp;AZHONG&#39;S BLOG</span>
+            <span>&emsp;阿中のBLOG</span>
         </div>
         <transition name="slide">
             <div class="items" v-show="showMenuItems">
@@ -148,14 +148,14 @@
                 <div id="main" v-show="!loading">
                     <div class="article">
     <div>
-        <h1>stl</h1>
+        <h1>树形DP</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/7/16
+            2023/7/26
         </span>
         
         
@@ -166,7 +166,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/stl-container/" style="color: #03a9f4">stl container</a>
+                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
             </span>
             
         </span>
@@ -174,46 +174,58 @@
     </div>
     
     <div class="content" v-pre>
-        <p>vector<br>很多时候我们不能提前开好那么大的空间（eg：预处理 1~n 中所有数的约数）。尽管我们能知道数据总量在空间允许的级别，<br>但是单份数据还可能非常大，这种时候我们就需要 vector 来把内存占用量控制在合适的范围内。vector 还支持动态扩容，<br>在内存非常紧张的时候这个特性就能派上用场了。</p>
-<pre><code class="cpp">// 1. 创建空vector; 常数复杂度
-vector&lt;int&gt; v0;
-// 1+. 这句代码可以使得向vector中插入前3个元素时，保证常数时间复杂度
-v0.reserve(3);
-// 2. 创建一个初始空间为3的vector，其元素的默认值是0; 线性复杂度
-vector&lt;int&gt; v1(3);
-// 3. 创建一个初始空间为3的vector，其元素的默认值是2; 线性复杂度
-vector&lt;int&gt; v2(3, 2);
-// 4. 创建一个初始空间为3的vector，其元素的默认值是1，
-// 并且使用v2的空间配置器; 线性复杂度
-vector&lt;int&gt; v3(3, 1, v2.get_allocator());
-// 5. 创建一个v2的拷贝vector v4， 其内容元素和v2一样; 线性复杂度
-vector&lt;int&gt; v4(v2);
-// 6. 创建一个v4的拷贝vector v5，其内容是&#123;v4[1], v4[2]&#125;; 线性复杂度
-vector&lt;int&gt; v5(v4.begin() + 1, v4.begin() + 3);
-// 7. 移动v2到新创建的vector v6，不发生拷贝; 常数复杂度; 需要 C++11
-vector&lt;int&gt; v6(std::move(v2));  // 或者 v6 = std::move(v2);
+        <p>img: <img src="/.com//%5Cmedias%5C%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230722121923.jpg"><br>树形DP其实和普通的DP问题大差不差，都涉及两个方面：状态表示和状态转移方程，只是运用到了树这种数据结构，<br>其中状态转移一般通过DFS或者BFS来实现。<br>下面以两道例题为例</p>
+<span id="more"></span>
+<p>Ural 大学有 N名职员，编号为 1∼N。</p>
+<p>他们的关系就像一棵以校长为根的树，父节点就是子节点的直接上司。</p>
+<p>每个职员有一个快乐指数，用整数Hi给出，其中 1≤i≤N<br>。</p>
+<p>现在要召开一场周年庆宴会，不过，没有职员愿意和直接上司一起参会。</p>
+<p>在满足这个条件的前提下，主办方希望邀请一部分职员参会，使得所有参会职员的快乐指数总和最大，求这个最大值。</p>
+<p>输入格式<br>第一行一个整数 N。</p>
+<p>接下来 N行，第 i行表示 i号职员的快乐指数 Hi。</p>
+<p>接下来 N−1行，每行输入一对整数 L,K，表示 K是L的直接上司。</p>
+<p>输出格式<br>输出最大的快乐指数。</p>
+<p>数据范围<br>1≤N≤6000,−128≤Hi≤127</p>
+<p>这道题的状态表示可以表示为f[u][0]和f[u][1],其中f[u][0]表示以u为根节点的不含u的子树所得的最大值，f[u][1]为以u为根含有u的子树最大值<br>状态转移过程：f[u][0] +&#x3D; max(f[子结点][0],f[子节点][1]),f[u][1] +&#x3D; f[子节点][0]<br>最终结果为 max(f[根节点][0],f[根节点][1])</p>
+<p>完整代码如下：</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
 
+const int N = 6100;
 
-//元素访问
-//at()
+bool father[N];
+int f[N][2];
+vector&lt;int&gt;happy(N);
+vector&lt;vector&lt;int&gt;&gt;g(N);
 
-v.at(pos) //返回容器中下标为 pos 的引用。如果数组越界抛出 std::out_of_range 类型的异常。
+void dfs(int root)&#123;
+    f[root][1] += happy[root];
+    for(int i = 0;i&lt;g[root].size();i++)&#123;
+        dfs(g[root][i]);
+        f[root][0] +=max(f[g[root][i]][0],f[g[root][i]][1]);
+        f[root][1] +=f[g[root][i]][0];
+    &#125;
+&#125;
 
-//operator[]
-
-v[pos] 返回容器中下标为 pos 的引用。不执行越界检查。
-
-//front()
-
-v.front() //返回首元素的引用。
-
-//back()
-
-v.back() //返回末尾元素的引用。
-
-data()
-
-v.data() //返回指向数组第一个元素的指针。
+int main()&#123;
+    int n;
+    cin&gt;&gt;n;
+    
+    for(int i = 1;i&lt;=n;i++) cin&gt;&gt;happy[i];
+    
+    for(int i = 0;i&lt;n-1;i++)&#123;
+        int k,l;
+        cin&gt;&gt;k&gt;&gt;l;
+        g[l].push_back(k);
+        father[k] = true;
+    &#125;
+    int root = 1;
+    while(father[root])&#123;
+        root++;
+    &#125;
+    dfs(root);
+    cout&lt;&lt;max(f[root][0],f[root][1]);
+&#125;
 </code></pre>
 
     </div>
@@ -230,11 +242,11 @@ v.data() //返回指向数组第一个元素的指针。
     <div id="footer-wrap">
         <div>
             &copy;
-            2022 - 2023 Azhong&#39;s blog
+            2022 - 2023 阿中のblog
             <span id="footer-icon">
                 <i class="fa-solid fa-font-awesome fa-fw"></i>
             </span>
-            &commat;a zhong
+            &commat;阿中
         </div>
         <div>
             Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;

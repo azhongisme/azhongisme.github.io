@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="Chinese">
     <head>
         <meta charset="utf-8" />
-        <title>Azhong&#39;s blog</title>
-        <meta name="author" content="a zhong" />
+        <title>阿中のblog</title>
+        <meta name="author" content="阿中" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
@@ -52,7 +52,7 @@
             <nav id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
     <div id="desktop-menu">
         <a class="title" href="/">
-            <span>AZHONG&#39;S BLOG</span>
+            <span>阿中のBLOG</span>
         </a>
         
         <a href="/">
@@ -84,7 +84,7 @@
     <div id="mobile-menu">
         <div class="title" @click="showMenuItems = !showMenuItems">
             <i class="fa-solid fa-bars fa-fw"></i>
-            <span>&emsp;AZHONG&#39;S BLOG</span>
+            <span>&emsp;阿中のBLOG</span>
         </div>
         <transition name="slide">
             <div class="items" v-show="showMenuItems">
@@ -153,7 +153,7 @@
         <span class="loop"></span>
         <span class="info">
             <div class="wrap">
-                <h1>Azhong&#39;s blog</h1>
+                <h1>阿中のblog</h1>
                 <h3></h3>
                 <h5></h5>
             </div>
@@ -163,6 +163,44 @@
 <div id="home-posts-wrap" true ref="homePostsWrap">
     <div id="home-posts">
         
+
+<div class="post">
+    <a href="/2023/07/26/%E6%A0%91%E5%BD%A2DP/">
+        <h2 class="post-title">树形DP</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/7/26
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>img: <img src="/.com//%5Cmedias%5C%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20230722121923.jpg"><br>树形DP其实和普通的DP问题大差不差，都涉及两个方面：状态表示和状态转移方程，只是运用到了树这种数据结构，<br>其中状态转移一般通过DFS或者BFS来实现。<br>下面以两道例题为例</p>
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/algorithm/" style="color: #00a596">algorithm</a>
+        </span>
+        
+    </div>
+    <a href="/2023/07/26/%E6%A0%91%E5%BD%A2DP/" class="go-post">阅读全文</a>
+</div>
 
 <div class="post">
     <a href="/2023/07/17/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
@@ -203,85 +241,6 @@
 </div>
 
 <div class="post">
-    <a href="/2023/07/16/stl/">
-        <h2 class="post-title">stl</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/7/16
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>vector<br>很多时候我们不能提前开好那么大的空间（eg：预处理 1~n 中所有数的约数）。尽管我们能知道数据总量在空间允许的级别，<br>但是单份数据还可能非常大，这种时候我们就需要 vector 来把内存占用量控制在合适的范围内。vector 还支持动态扩容，<br>在内存非常紧张的时候这个特性就能派上用场了。</p>
-<pre><code class="cpp">// 1. 创建空vector; 常数复杂度
-vector&lt;int&gt; v0;
-// 1+. 这句代码可以使得向vector中插入前3个元素时，保证常数时间复杂度
-v0.reserve(3);
-// 2. 创建一个初始空间为3的vector，其元素的默认值是0; 线性复杂度
-vector&lt;int&gt; v1(3);
-// 3. 创建一个初始空间为3的vector，其元素的默认值是2; 线性复杂度
-vector&lt;int&gt; v2(3, 2);
-// 4. 创建一个初始空间为3的vector，其元素的默认值是1，
-// 并且使用v2的空间配置器; 线性复杂度
-vector&lt;int&gt; v3(3, 1, v2.get_allocator());
-// 5. 创建一个v2的拷贝vector v4， 其内容元素和v2一样; 线性复杂度
-vector&lt;int&gt; v4(v2);
-// 6. 创建一个v4的拷贝vector v5，其内容是&#123;v4[1], v4[2]&#125;; 线性复杂度
-vector&lt;int&gt; v5(v4.begin() + 1, v4.begin() + 3);
-// 7. 移动v2到新创建的vector v6，不发生拷贝; 常数复杂度; 需要 C++11
-vector&lt;int&gt; v6(std::move(v2));  // 或者 v6 = std::move(v2);
-
-
-//元素访问
-//at()
-
-v.at(pos) //返回容器中下标为 pos 的引用。如果数组越界抛出 std::out_of_range 类型的异常。
-
-//operator[]
-
-v[pos] 返回容器中下标为 pos 的引用。不执行越界检查。
-
-//front()
-
-v.front() //返回首元素的引用。
-
-//back()
-
-v.back() //返回末尾元素的引用。
-
-data()
-
-v.data() //返回指向数组第一个元素的指针。
-</code></pre>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/stl-container/" style="color: #03a9f4">stl container</a>
-        </span>
-        
-    </div>
-    <a href="/2023/07/16/stl/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
     <a href="/2023/07/13/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E4%BA%8C%E7%AB%A0/">
         <h2 class="post-title">算法导论第二章</h2>
     </a>
@@ -299,7 +258,7 @@ v.data() //返回指向数组第一个元素的指针。
     <div class="description">
         <div class="content" v-pre>
             
-            <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br>
+            <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br></p>
             
         </div>
     </div>
@@ -312,40 +271,11 @@ v.data() //返回指向数组第一个元素的指针。
         
         <span class="tag">
             
-            <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
+            <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
         </span>
         
     </div>
     <a href="/2023/07/13/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E4%BA%8C%E7%AB%A0/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2023/07/12/My-New-Post/">
-        <h2 class="post-title">最短路算法</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/7/12
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        
-    </div>
-    <a href="/2023/07/12/My-New-Post/" class="go-post">阅读全文</a>
 </div>
 
 
@@ -371,20 +301,12 @@ v.data() //返回指向数组第一个元素的指针。
         <div class="avatar">
             <img src="/images/%E5%A4%B4%E5%83%8F.jpg" alt="avatar" />
         </div>
-        <div class="name">a zhong</div>
+        <div class="name">阿中</div>
         <div class="description">
             <p>Description<br>…</p>
 
         </div>
         
-        
-        <div class="friend-links">
-            
-            <div class="friend-link">
-                <a target="_blank" rel="noopener" href="https://argvchs.github.io">Argvchs</a>
-            </div>
-            
-        </div>
         
     </div>
 </div>
@@ -397,11 +319,11 @@ v.data() //返回指向数组第一个元素的指针。
     <div id="footer-wrap">
         <div>
             &copy;
-            2022 - 2023 Azhong&#39;s blog
+            2022 - 2023 阿中のblog
             <span id="footer-icon">
                 <i class="fa-solid fa-font-awesome fa-fw"></i>
             </span>
-            &commat;a zhong
+            &commat;阿中
         </div>
         <div>
             Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
