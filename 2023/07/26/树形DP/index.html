@@ -345,7 +345,7 @@ int main()&#123;
         root++;
     &#125;
     dfs(root);
-    //由于根节点没有父节点，所以没有f[root][1]
+    //由于根节点没有父节点，所以没有f[root][0]
     cout&lt;&lt;min(f[root][1],f[root][2]);
     system(&quot;pause&quot;);
 &#125;
