@@ -1,0 +1,677 @@
+
+<!DOCTYPE html>
+<html lang="Chinese">
+    <head>
+        <meta charset="utf-8" />
+        <title>并查集 | 阿中のblog</title>
+        <meta name="author" content="阿中" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/favicon-32x32.png" />
+        <script src="https://cdn.staticfile.org/vue/3.2.47/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.3.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <nav id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <div id="desktop-menu">
+        <a class="title" href="/">
+            <span>阿中のBLOG</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;阿中のBLOG</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </div>
+</nav>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <transition name="into">
+                <div id="main" v-show="!loading">
+                    <div class="article">
+    <div>
+        <h1>并查集</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/7/31
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/data-structure/" style="color: #00a596">data structure</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>并查集是一种用于管理元素所属集合的数据结构，实现为一个森林，其中每棵树表示一个集合，树中的节点表示对应集合中的元素。<br>并查集主要有两种操作：（1）合并两个集合 （2）查询某个元素所在的集合（根节点）<br>并查集的优化方式也是有两个：一个为路径压缩，宁一个为按秩合并(启发式合并)。两种优化方式最终都是O(logn)的复杂度，同时使用路径压缩和启发式合并之后，并查集的每个操作平均时间仅为 O(\alpha(n))，其中 \alpha 为阿克曼函数的反函数，其增长极其缓慢，也就是说其单次操作的平均运行时间可以认为是一个很小的常数。<br>我们还可以在并查集的边上定义某种权值、以及这种权值在路径压缩时产生的运算，从而解决更多的问题。带权并查集的思想可以理解成一种维护元素间的相对关系。<br>并查集还有一种是扩展域，采用的是枚举的思想。</p>
+<span id="more"></span>
+<p>初始化: 初始时每个元素都位于一个独立的集合，因此将每个元素的父节点设为其自身</p>
+<pre><code class="cpp">for(int i = 0;i&lt;n;i++)&#123;
+    p[i] = i;
+&#125;
+</code></pre>
+<p>普通查询</p>
+<pre><code class="cpp">int find(int x)&#123;
+    if(p[x]!=x)  return find(p[x]);
+    return p[x];
+&#125;
+</code></pre>
+<p>路径压缩查询</p>
+<pre><code class="cpp">int find(int x)&#123;
+    if(p[x]!=x) p[x] = find(p[x]);
+    return p[x];
+&#125;
+</code></pre>
+<p>合并</p>
+<pre><code class="cpp">void merch(int a,int b)&#123;
+    p[find(a)] = find(b);
+&#125;
+</code></pre>
+<p>格子游戏<br>题意：两个人在n*n的棋盘上画线，画到一个闭合的区域游戏结束，D为向下画，R为向右画,<br>m为操作步数，若最后能得到则输出第一个出现时的操作次数，若不能，输出“draw”</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 40010;
+
+int n,m;
+int p[N];
+
+int find(int x)&#123;
+    if(p[x] != x) p[x] = find(p[x]);
+    return p[x];
+&#125;
+
+int main()&#123;
+    cin&gt;&gt;n&gt;&gt;m;
+    for(int i = 0;i&lt;n*n;i++)&#123;
+        p[i] = i;
+    &#125;
+    int res = 0;
+    for(int i = 1;i&lt;=m;i++)&#123;
+        int x,y;
+        char d;
+        cin&gt;&gt;x&gt;&gt;y&gt;&gt;d;
+        x--,y--;
+        int a = x*n+y;
+        int b;
+        if(d == &#39;D&#39;) b = (x+1)*n+y;
+        else b = x*n+y+1; 
+        int pa = find(a),pb = find(b);
+        cout&lt;&lt;a&lt;&lt;&quot;__&quot;&lt;&lt;b&lt;&lt;&quot;__&quot;&lt;&lt;pa&lt;&lt;&quot;__&quot;&lt;&lt;pb&lt;&lt;&quot;\n&quot;;
+        if(pa==pb)&#123;
+            res = i;
+            break;
+        &#125;
+        p[pa] = pb;//合并
+    &#125;
+    if(!res) cout&lt;&lt;&quot;draw&quot;;
+    else cout&lt;&lt;res;
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
+<p>搭配购买<br>【题目描述】<br>Joe觉得云朵很美，决定去山上的商店买一些云朵。商店里有n朵云，云朵被编号为1，2，…，n，<br>并且每朵云都有一个价值。但是商店老板跟他说，一些云朵要搭配来买才好，所以买一朵云则与这朵云<br>有搭配的云都要买。</p>
+<p>但是Joe的钱有限，所以他希望买的价值越多越好。</p>
+<p>【输入】<br>第1行n，m，w，表示n朵云，m个搭配，Joe有w的钱。</p>
+<p>第2~n+1行，每行ci，di表示i朵云的价钱和价值。</p>
+<p>第n+2~n+1+m行，每行ui，vi，表示买ui就必须买vi，同理，如果买vi就必须买ui。</p>
+<p>【输出】<br>一行，表示可以获得的最大价值。</p>
+<p>思路: 将有搭配的云看作一个集合，在通过01背包求得最大值即可</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 10010;
+
+int n,m,vol;
+int p[N],v[N],w[N],f[N];
+
+int find(int x)&#123;
+    if(p[x] != x) p[x] = find(p[x]);
+    return p[x];
+&#125;
+
+int main()&#123;
+    cin&gt;&gt;n&gt;&gt;m&gt;&gt;vol;
+    for(int i = 1;i&lt;=n;i++) p[i] = i;
+    for(int i = 1;i&lt;=n;i++) cin&gt;&gt;v[i]&gt;&gt;w[i];
+
+    while(m--)&#123;
+        int a,b;
+        cin&gt;&gt;a&gt;&gt;b;
+        int pa = find(a),pb = find(b);
+        if(pa!=pb)&#123;
+            v[pb]+=v[pa];
+            w[pb]+=w[pa];
+            p[pa] = pb;
+        &#125;
+    &#125;
+
+    for(int i = 1;i&lt;=n;i++)&#123;
+        if(p[i]==i)&#123;
+            for(int j = vol;j&gt;=v[i];j--)&#123;
+                f[j] = max(f[j-v[i]]+w[i],f[j]);
+            &#125;
+        &#125;
+    &#125;
+    cout&lt;&lt;f[vol];
+    system(&quot;pause&quot;);
+    return 0;
+&#125;
+</code></pre>
+<p>程序自动分析<br>在实现程序自动分析的过程中，常常需要判定一些约束条件是否能被同时满足。</p>
+<p>考虑一个约束满足问题的简化版本：假设 x1,x2,x3,…代表程序中出现的变量，给定 n个形如<br>xi&#x3D;xj或 xi≠xj的变量相等&#x2F;不等的约束条件，请判定是否可以分别为每一个变量赋予恰当的值，<br>使得上述所有约束条件同时被满足。</p>
+<p>例如，一个问题中的约束条件为：x1&#x3D;x2，x2&#x3D;x3，x3&#x3D;x4，x1≠x4<br>，这些约束条件显然是不可能同时被满足的，因此这个问题应判定为不可被满足。</p>
+<p>现在给出一些约束满足问题，请分别对它们进行判定。</p>
+<p>输入格式<br>输入文件的第 1行包含 1个正整数 ，表示需要判定的问题个数，注意这些问题之间是相互独立的。</p>
+<p>对于每个问题，包含若干行：</p>
+<p>第 1行包含 1个正整数 n，表示该问题中需要被满足的约束条件个数。</p>
+<p>接下来 n行，每行包括 3个整数 i,j,e，描述 1个相等&#x2F;不等的约束条件，相邻整数之间用单个空格<br>隔开。若 e&#x3D;1，则该约束条件为 xi&#x3D;xj；若 e&#x3D;0，则该约束条件为 xi≠xj。</p>
+<p>输出格式<br>输出文件包括 t行。</p>
+<p>输出文件的第 k行输出一个字符串 YES 或者 NO，YES 表示输入中的第 k<br>个问题判定为可以被满足，NO 表示不可被满足。</p>
+<p>来源：<a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/description/239/">https://www.acwing.com/problem/content/description/239/</a></p>
+<p>分析：由于这道题的数据范围很大，但是数据最多只有2e5，因此需要用离散化，这里有两个集合一个集合为相等的，宁一个集合为<br>不等的。若不等的两个集合在同一个相等的集合里，则为NO，否则为YES</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 2e6+1000;
+
+int p[N];
+int n,t,idx;
+
+//不用路径压缩会超时
+int find(int x)&#123;
+    if(x!=p[x]) p[x] = find(p[x]);
+    return p[x];
+&#125;
+
+struct node&#123;
+    int a,b,c;
+&#125;q1[N];
+
+unordered_map&lt;int,int&gt;mp;
+
+int main()&#123;
+    int t;
+    scanf(&quot;%d&quot;,&amp;t);
+    while(t--)&#123;
+        
+        scanf(&quot;%d&quot;,&amp;n);
+        
+        mp.clear();
+        
+        int m = 0;
+        
+        idx = 1;
+        bool pd = true;
+        
+        for(int i = 1;i&lt;=n*2;i++)&#123;
+            p[i] = i;
+        &#125;
+        
+        for(int i = 1;i&lt;=n;i++)&#123;
+            int a,b,c;
+            scanf(&quot;%d%d%d&quot;,&amp;a,&amp;b,&amp;c);
+            
+            
+            if(!mp[a])&#123;
+                mp[a] = idx++;
+            &#125;
+            if(!mp[b])&#123;
+                mp[b] = idx++;
+            &#125;
+            if(c)&#123;
+                int pa = find(mp[a]),pb = find(mp[b]);
+                p[pa] = pb;
+            &#125;
+            q1[i] = &#123;mp[a],mp[b],c&#125;;
+        &#125;
+        
+        for(int i = 0;i&lt;m;i++)&#123;
+            if(!q1[i].c) continue;
+            int a = q1[i].a,b = q1[i].b;
+            int pa = find(a),pb = find(b);
+            if(pa==pb)&#123;
+                pd = false;
+                break;
+            &#125;
+        &#125;
+        
+        
+        if(pd) puts(&quot;YES&quot;);
+        else puts(&quot;NO&quot;);
+        
+    &#125;
+&#125;
+</code></pre>
+<p>有一个划分为 N列的星际战场，各列依次编号为 1,2,…,N。</p>
+<p>有 N艘战舰，也依次编号为 1,2,…,N，其中第 i号战舰处于第 i列。</p>
+<p>有 T条指令，每条指令格式为以下两种之一：</p>
+<p>M i j，表示让第 i号战舰所在列的全部战舰保持原有顺序，接在第 j号战舰所在列的尾部。C i j，表示询<br>问第 i号战舰与第 j号战舰当前是否处于同一列中，如果在同一列中，它们之间间隔了多少艘战舰。现在需<br>要你编写一个程序，处理一系列的指令。</p>
+<p>输入格式<br>第一行包含整数 T，表示共有 T条指令。</p>
+<p>接下来 T行，每行一个指令，指令有两种形式：M i j 或 C i j。</p>
+<p>其中 M和 C为大写字母表示指令类型，i和 j为整数，表示指令涉及的战舰编号。</p>
+<p>输出格式<br>你的程序应当依次对输入的每一条指令进行分析和处理：</p>
+<p>如果是 M i j 形式，则表示舰队排列发生了变化，你的程序要注意到这一点，但是不要输出任何信息；</p>
+<p>如果是 C i j 形式，你的程序要输出一行，仅包含一个整数，表示在同一列上，第 i号战舰与第 j<br>号战舰之间布置的战舰数目，如果第 i号战舰与第 j号战舰当前不在同一列上，则输出 −1。</p>
+<p>数据范围<br>N≤30000,T≤500000</p>
+<p>分析：若是不求i，j之间的战舰个数，那就用普通的并查集做法就可以了，但这是一个带权值的并查集，这里<br>的权值其实直接从根插到另一个根上的权值就是第一棵树的节点数量（舰队数量）这里需要用到前缀和的思想，<br>d[i]，d[j]分别表示i，j到根节点的距离，中间间隔也就是max(0,abs(d[i]-d[j])-1)(保证相同时)不会为-1</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 30010;
+
+int p[N],s[N],d[N];
+int n;
+
+int find(int x)&#123;
+    if(p[x]!=x)&#123;
+        int rx = find(p[x]);
+        d[x] += d[p[x]];
+        p[x] = rx;
+    &#125; 
+    return p[x];
+&#125;
+
+int main()&#123;
+    for(int i = 1;i&lt;=N;i++)&#123;
+        p[i] = i;
+        s[i] = 1;
+    &#125;
+    cin&gt;&gt;n;
+    while(n--)&#123;
+        char c;
+        int i,j;
+        cin&gt;&gt;c&gt;&gt;i&gt;&gt;j;
+        int pa = find(i),pb = find(j);
+        if(c==&#39;M&#39;)&#123;
+            if(pa!=pb)&#123;
+                p[pa] = pb;
+                d[pa] = s[pb];
+                s[pb] += s[pa];
+            &#125;
+        &#125;
+        else&#123;
+            if(pa!=pb) cout&lt;&lt;-1&lt;&lt;&quot;\n&quot;;
+            else&#123;
+                cout&lt;&lt;max(0,abs(d[i]-d[j])-1)&lt;&lt;&quot;\n&quot;;
+            &#125;
+        &#125;
+    &#125;
+    
+&#125;
+</code></pre>
+<p>食物链<br>动物王国中有三类动物 A,B,C，这三类动物的食物链构成了有趣的环形。</p>
+<p>A吃 B，B吃 C，C吃 A。</p>
+<p>现有 N个动物，以 1∼N编号。</p>
+<p>每个动物都是 A,B,C中的一种，但是我们并不知道它到底是哪一种。</p>
+<p>有人用两种说法对这 N个动物所构成的食物链关系进行描述：</p>
+<p>第一种说法是 1 X Y，表示 X和 Y是同类。</p>
+<p>第二种说法是 2 X Y，表示 X吃 。</p>
+<p>此人对 N个动物，用上述两种说法，一句接一句地说出 K句话，这 K<br>句话有的是真的，有的是假的。</p>
+<p>当一句话满足下列三条之一时，这句话就是假话，否则就是真话。</p>
+<p>当前的话与前面的某些真的话冲突，就是假话；<br>当前的话中 X或 Y比 N大，就是假话；<br>当前的话表示 X吃 X，就是假话。<br>你的任务是根据给定的 N和 K句话，输出假话的总数。</p>
+<p>输入格式<br>第一行是两个整数 N和 K，以一个空格分隔。</p>
+<p>以下 K行每行是三个正整数 D，X，Y，两数之间用一个空格隔开，其中 D表示说法的种类。</p>
+<p>若 D&#x3D;1，则表示 X和 Y是同类。</p>
+<p>若 D&#x3D;2，则表示 X吃 Y。</p>
+<p>输出格式<br>只有一个整数，表示假话的数目。</p>
+<p>数据范围<br>1≤N≤50000,0≤K≤100000</p>
+<p>分析：父节点指向被吃的动物，维护每个点到根节点的距离，将距离%3得到与根节点的关系<br>0为同类，1表示吃根节点，2表示被根节点吃</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 50010;
+
+int n,k;
+int p[N],s[N],d[N];
+int ans = 0;
+
+int find(int x)&#123;
+    if(p[x]!=x)&#123;
+        int rx = find(p[x]);
+        d[x] += d[p[x]];
+        p[x] = rx;
+    &#125;
+    return p[x];
+&#125;
+
+int main()&#123;
+    cin&gt;&gt;n&gt;&gt;k;
+    for(int i = 1;i&lt;=n;i++)&#123;
+        p[i] = i;
+        s[i] = 1;
+    &#125;
+    for(int i = 0;i&lt;k;i++)&#123;
+        int c,x,y;
+        cin&gt;&gt;c&gt;&gt;x&gt;&gt;y;
+        
+        if(x&gt;n||y&gt;n)&#123;
+            ans++;
+            continue;
+        &#125;
+        
+        if(c==2&amp;&amp;x==y)&#123;
+            ans++;
+            continue;
+        &#125;
+        
+        int px = find(x),py = find(y);
+        
+        if(c==1)&#123;
+            if(px==py&amp;&amp;(d[x]-d[y])%3)&#123;
+                ans++;
+                continue;
+            &#125;
+            if(px!=py)&#123;
+                p[px] = py;
+                d[px] = d[y] - d[x];
+            &#125;
+        &#125;
+        else&#123;
+            if(px==py)&#123;
+                if(((d[x]-d[y])-1)%3)&#123;
+                    ans++;
+                    continue;
+                &#125;
+            &#125;
+            else&#123;
+                p[px] = py;
+                d[px] = d[y]-d[x]+1;
+            &#125;
+        &#125;
+    &#125;
+    cout&lt;&lt;ans;
+&#125;
+</code></pre>
+<p>奇偶游戏</p>
+<p>小 A和小 B在玩一个游戏。</p>
+<p>首先，小 A写了一个由 0和 1组成的序列 S，长度为 N。</p>
+<p>然后，小 B向小 A提出了 M个问题。</p>
+<p>在每个问题中，小 B指定两个数 l和 r，小 A回答 S[l∼r]中有奇数个 1还是偶数个 1。</p>
+<p>机智的小 B发现小 A有可能在撒谎。</p>
+<p>例如，小 A曾经回答过 S[1∼3]中有奇数个 1，S[4∼6]中有偶数个 1，现在又回答 S[1∼6]中有偶数个 1，显然这是自相矛盾的。</p>
+<p>请你帮助小 B检查这 M个答案，并指出在至少多少个回答之后可以确定小 A一定在撒谎。</p>
+<p>即求出一个最小的 k，使得 01序列 S满足第 1∼k个回答，但不满足第 1∼k+1个回答。</p>
+<p>输入格式<br>第一行包含一个整数 ，表示 01序列长度。</p>
+<p>第二行包含一个整数 M，表示问题数量。</p>
+<p>接下来 M行，每行包含一组问答：两个整数 l和 r，以及回答 even 或 odd，用以描述 S[l∼r]中有偶数个 1还是奇数个 1。</p>
+<p>输出格式<br>输出一个整数 k，表示 01序列满足第 1∼k个回答，但不满足第 1∼k+1<br>个回答，如果 01序列满足所有回答，则输出问题总数量。</p>
+<p>数据范围<br>N≤109,M≤5000</p>
+<p>分析：这道题是一个带权的并查集，同时需要用到前缀和和离散化,d[x]%2与d[y]%2分别表示x,y与根节点的关系，0表示奇偶性相<br>同，1表示不同，设s[i] &#x3D; a1+a2+….+ai表示1<del>i中有s[i]个1，若s[l,r]为奇数，说明s[r]与s[l-1]奇偶性不同，反之则相同<br>每次维护出[1</del>l-1]与[1~r]的奇偶性</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+using namespace std;
+const int N = 10010;
+int n,m;
+int p[N],d[N];
+unordered_map &lt;int,int&gt; mp;
+int get (int x) &#123;
+    if (!mp[x]) mp[x] = ++n;
+    return mp[x];
+&#125;
+int find (int x) &#123;
+    if (p[x] != x) &#123;
+        int rx = find (p[x]);
+        d[x] += d[p[x]];
+        p[x] = rx;
+    &#125;
+    return p[x];
+&#125;
+int main () &#123;
+    cin &gt;&gt; n&gt;&gt; m;
+    n = 0;
+    for (int i = 1;i &lt; N;i++) p[i] = i;
+    int ans = m;
+    for (int i = 1;i &lt;= m;i++) &#123;
+        int x,y;
+        string s;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; s;
+        x = get (x - 1),y = get (y);    
+        int px = find (x),py = find (y);
+        int t = s == &quot;odd&quot;;
+        if (px == py &amp;&amp; abs (d[x] - d[y]) % 2 != t) &#123;
+            ans = i - 1;
+            break;
+        &#125;
+        else if (px != py) &#123;
+            p[px] = py;
+            d[px] = abs (d[x] - d[y] - t);
+        &#125;
+    &#125;
+    cout &lt;&lt; ans &lt;&lt; endl;
+    return 0;
+&#125;
+</code></pre>
+<p>扩展域做法：<br>根据输入情况判断x同类还是异类，若同类则x为奇数时，y不能为偶数，同理x为偶数时，y不能为奇数<br>最后在合并</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+using namespace std;
+const int N = 20010,M = 10010;
+int n,m;
+int p[N];
+unordered_map &lt;int,int&gt; mp;
+int get (int x) &#123;
+    if (!mp[x]) mp[x] = ++n;
+    return mp[x];
+&#125;
+int find (int x) &#123;
+    if (p[x] != x) &#123;
+        p[x] = find(p[x]);
+    &#125;
+    return p[x];
+&#125;
+int main () &#123;
+    cin &gt;&gt; n&gt;&gt; m;
+    n = 0;
+    for (int i = 1;i &lt; N;i++) p[i] = i;
+    int res = m;
+    for (int i = 1;i &lt;= m;i++) &#123;
+        int x,y;
+        string s;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; s;
+        x = get (x - 1),y = get (y);    
+
+        if(s==&quot;even&quot;)&#123;
+            if(find(x+M)==find(y))&#123;
+                res  = i - 1;
+                break;
+            &#125;
+            p[find(x)] = find(y);
+            p[find(x+M)] = find(y+M);
+        &#125;
+        else&#123;
+            if(find(x)==find(y))&#123;
+                res = i-1;
+                break;
+            &#125;
+            p[find(x+M)] = find(y);
+            p[find(x)] = find(y+M);
+        &#125;
+        
+    &#125;
+    cout &lt;&lt; res &lt;&lt; endl;
+    return 0;
+&#125;
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 阿中のblog
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;阿中
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+                </div>
+            </transition>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+
+
+
+
+        
+    </body>
+</html>

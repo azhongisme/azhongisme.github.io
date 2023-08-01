@@ -3,7 +3,7 @@
 <html lang="Chinese">
     <head>
         <meta charset="utf-8" />
-        <title>算法导论第二章 | 阿中のblog</title>
+        <title>Tags: data structure | 阿中のblog</title>
         <meta name="author" content="阿中" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -28,10 +28,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -146,106 +142,61 @@
 
             <transition name="into">
                 <div id="main" v-show="!loading">
-                    <div class="article">
-    <div>
-        <h1>算法导论第二章</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/7/13
+                    <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        <span>
+            <a href="/tags/algorithm/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                algorithm
+            </a>
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            <span class="tag">
+        
+        <span>
+            <a href="/tags/data-structure/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                data structure
+            </a>
+        </span>
+        
+        
+        
+        
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2023/7/31</div>
+            <a href="/2023/07/31/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
+                <h3>并查集</h3>
+            </a>
+            <div class="info">
                 
-                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
-            </span>
-            
-        </span>
-        
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/data-structure/" style="color: #03a9f4">data structure</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    <div class="content" v-pre>
-        <p>  插入排序是算法导论第二章的第一个算法，适用于少量数据的排序，假设数组A[1….n-1]有序，则未排序的A[1….n]的第n个元素<br>  即A[n]的位置在A[1….n-1]中插入<br>  <span id="more"></span><br>  具体代码如下</p>
-<pre><code class="cpp">include&lt;bits/stdc++.h&gt;
-int main()&#123;
-  int n;
-  std::cin&gt;&gt;n;
-  std::vector&lt;int&gt;a(n);
-  for(int i = 0;i&lt;n;i++&gt;)&#123;
-      std::cin&gt;&gt;a[i];
-  &#125;
-  for (int i = 1; i &lt; n; i++) &#123;
-      int key = a[i];
-      int j = i - 1;
-      while (j &gt;= 0 &amp;&amp; a[j] &gt; key) &#123;
-          a[j + 1] = a[j];
-          j--;
-      &#125;
-      a[j + 1] = key;
-  &#125;
-  for (int i = 0; i &lt; n; i++) &#123;
-      std::cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
-  &#125;
-&#125;
-</code></pre>
-<p>  算法分析 ：<br>  &emsp;上述代码实现的升序排序，假设最糟糕的情况为原数组为降序，那么需要计算n(n+1)&#x2F;2次<br>  &emsp;因此时间复杂度为O(n²) </p>
-<p>  分治法 ：<br>  &emsp;许多有用的算法在结构上是递归的:&nbsp;为了解决一个给定的问题,算法一次或多次递归地调用其自身用其自身以解决紧密相关的<br>  若干子问题。这些算法典型地遵循分治法地思想:&nbsp;将原问题分解为几个规模较小但类似于原问题的子问题,递归地求解这些子问<br>  题,然后再合并这些子问题的解来建立几个问题的解。<br>  &emsp;&emsp;分治模式在每次递归时都有三个步骤：<br>  &emsp;&emsp;分解原问题为若干子问<br>  &emsp;&emsp;解决子问题<br>  &emsp;&emsp;合并子问题的解构成原问题的解</p>
-<p>  归并排序(nlgn)：<br>  &emsp;归并排序算法完全遵循分治模式<br>  &emsp;分解&nbsp;分解待排序的n个元素的序列成各具n&#x2F;2个元素的子序列<br>  &emsp;解决&nbsp;使用归并排序递归地排序两个子序列<br>  &emsp;合并&nbsp;合并两个已排序的子序列以产生已排序的答案<br>  代码如下  </p>
-<pre><code class="cpp">#include&lt;iostream&gt;
-#include&lt;algorithm&gt;
-using namespace std;
-int n;
-const int N = 100010;
-//用tmp数组存储子序列
-int q[N],tmp[N];
-
-void merge_sort(int q[],int l,int r)&#123;
-  if(l&gt;=r) return;
-  
-  int mid = l+r&gt;&gt;1;
-  
-  merge_sort(q,l,mid),merge_sort(q,mid+1,r);
-  
-  int k = 0,i = l,j = mid+1;
-  
-  while(i&lt;=mid&amp;&amp;j&lt;=r)&#123;
-      if(q[i]&lt;=q[j]) tmp[k++] = q[i++];
-      else tmp[k++] = q[j++];
-  &#125;
-  
-  while(i&lt;=mid) tmp[k++] = q[i++];
-  while(j&lt;=r) tmp[k++] = q[j++];
-  
-  for(i = l,j = 0;i&lt;=r;i++,j++) q[i] = tmp[j];
-&#125;
-
-int main()
-&#123;
-  scanf(&quot;%d&quot;,&amp;n);
-  for(int i = 0;i&lt;n;i++) scanf(&quot;%d&quot;,&amp;q[i]);
-  merge_sort(q,0,n-1);
-  for(int i = 0;i&lt;n;i++)&#123;
-      printf(&quot;%d &quot;,q[i]);
-  &#125;
-&#125;
-</code></pre>
-
-    </div>
-    
-    
-    
-    
-    
-    
     
 </div>
 
@@ -278,12 +229,6 @@ int main()
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-
-
-
-
         
     </body>
 </html>
