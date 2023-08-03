@@ -165,6 +165,54 @@
         
 
 <div class="post">
+    <a href="/2023/08/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
+        <h2 class="post-title">树状数组</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/8/2
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>树状数组顾名思义就是一个数组长的像树，树状数组主要涉及的操作为求前缀和和修改某一个数</p>
+<p>求前缀和</p>
+<pre><code class="cpp">int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+int sum(int x)&#123;
+    int res = 0;
+    for(int i = x;i;i-=lowbit(i)) res += tr[i];
+    return res;
+&#125;
+</code></pre>
+<p>修改a[x],将a[x] +&#x3D; c</p>
+<pre><code class="cpp">void add(int x,int c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i] +=c;
+&#125;
+</code></pre>
+<p>上面两个操作中的+-lowbit(i)分别为求父节点和子节点<br>树状数组的原理主要就是二进制 假设k表示x的二进制表示下最后一位1(….1000…00),有k个0，c[x]表示以x结尾，长度为2^k的区间和<br>这里以16为例：16的二进制表示为10000，首先将c[x] &#x3D; a[x],那么接下来就是01111，将其分为四个区间(均为左开右闭)<br>(01110,01111],(01100,01110],(01000,01100],(00000,01000]也就是说c[16] &#x3D; a[16] + c[15] + c[12] + c[8]</p>
+<p><img src="/2023/08/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/%5C%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%5C%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.jpg"></p>
+<p>图中演示了c[8] 和 c[16]</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+    </div>
+    <a href="/2023/08/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
     <a href="/2023/07/31/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
         <h2 class="post-title">并查集</h2>
     </a>
@@ -195,7 +243,7 @@
         
         <span class="tag">
             
-            <a href="/tags/data-structure/" style="color: #00a596">data structure</a>
+            <a href="/tags/data-structure/" style="color: #03a9f4">data structure</a>
         </span>
         
     </div>
@@ -233,7 +281,7 @@
         
         <span class="tag">
             
-            <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
+            <a href="/tags/algorithm/" style="color: #ffa2c4">algorithm</a>
         </span>
         
     </div>
@@ -271,7 +319,7 @@
         
         <span class="tag">
             
-            <a href="/tags/algorithm/" style="color: #00a596">algorithm</a>
+            <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
         </span>
         
     </div>
@@ -309,7 +357,7 @@
         
         <span class="tag">
             
-            <a href="/tags/algorithm/" style="color: #ffa2c4">algorithm</a>
+            <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
         </span>
         
     </div>
@@ -383,5 +431,4 @@
         </div>
         <script src="/js/main.js"></script>
         
-    </body>
-</html>
+    <script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

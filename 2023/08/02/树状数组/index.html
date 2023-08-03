@@ -3,7 +3,7 @@
 <html lang="Chinese">
     <head>
         <meta charset="utf-8" />
-        <title>Tags: algorithm | 阿中のblog</title>
+        <title>树状数组 | 阿中のblog</title>
         <meta name="author" content="阿中" />
         <meta name="description" content="" />
         <meta name="keywords" content="" />
@@ -28,6 +28,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -142,113 +146,49 @@
 
             <transition name="into">
                 <div id="main" v-show="!loading">
-                    <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        <span>
-            <a href="/tags/algorithm/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                algorithm
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/tags/data-structure/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                data structure
-            </a>
+                    <div class="article">
+    <div>
+        <h1>树状数组</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/8/2
         </span>
         
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/7/26</div>
-            <a href="/2023/07/26/%E6%A0%91%E5%BD%A2DP/">
-                <h3>树形DP</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <p>树状数组顾名思义就是一个数组长的像树，树状数组主要涉及的操作为求前缀和和修改某一个数</p>
+<p>求前缀和</p>
+<pre><code class="cpp">int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+int sum(int x)&#123;
+    int res = 0;
+    for(int i = x;i;i-=lowbit(i)) res += tr[i];
+    return res;
+&#125;
+</code></pre>
+<p>修改a[x],将a[x] +&#x3D; c</p>
+<pre><code class="cpp">void add(int x,int c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i] +=c;
+&#125;
+</code></pre>
+<p>上面两个操作中的+-lowbit(i)分别为求父节点和子节点<br>树状数组的原理主要就是二进制 假设k表示x的二进制表示下最后一位1(….1000…00),有k个0，c[x]表示以x结尾，长度为2^k的区间和<br>这里以16为例：16的二进制表示为10000，首先将c[x] &#x3D; a[x],那么接下来就是01111，将其分为四个区间(均为左开右闭)<br>(01110,01111],(01100,01110],(01000,01100],(00000,01000]也就是说c[16] &#x3D; a[16] + c[15] + c[12] + c[8]</p>
+<p><img src="/2023/08/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/%5C%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84%5C%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.jpg"></p>
+<p>图中演示了c[8] 和 c[16]</p>
+
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/7/17</div>
-            <a href="/2023/07/17/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">
-                <h3>深度优先搜索</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
-    </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2023/7/13</div>
-            <a href="/2023/07/13/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E4%BA%8C%E7%AB%A0/">
-                <h3>算法导论第二章</h3>
-            </a>
-            <div class="info">
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/algorithm/" style="color: #00bcd4">algorithm</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
-    </div>
+    
+    
+    
+    
     
 </div>
 
@@ -281,5 +221,11 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+
+
+
+
         
     <script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
