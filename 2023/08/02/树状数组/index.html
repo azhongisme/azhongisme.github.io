@@ -182,6 +182,259 @@ int sum(int x)&#123;
 <p>上面两个操作中的+-lowbit(i)分别为求父节点和子节点<br>树状数组的原理主要就是二进制 假设k表示x的二进制表示下最后一位1(….1000…00),有k个0，c[x]表示以x结尾，长度为2^k的区间和<br>这里以16为例：16的二进制表示为10000，首先将c[x] &#x3D; a[x],那么接下来就是01111，将其分为四个区间(均为左开右闭)<br>(01110,01111],(01100,01110],(01000,01100],(00000,01000]也就是说c[16] &#x3D; a[16] + c[15] + c[12] + c[8]</p>
 <p><a target="_blank" rel="noopener" href="https://imgse.com/i/pPFmlxH"><img src="https://s1.ax1x.com/2023/08/03/pPFmlxH.jpg" alt="pPFmlxH.jpg"></a></p>
 <p>图中演示了c[8] 和 c[16]</p>
+<p>有 n头奶牛，已知它们的身高为 1∼n且各不相同，但不知道每头奶牛的具体身高。</p>
+<p>现在这 n头奶牛站成一列，已知第 i头牛前面有 A[i]头牛比它低，求每头奶牛的身高。</p>
+<p>输入格式<br>第 1行：输入整数 n。</p>
+<p>第 2..n行：每行输入一个整数 Ai<br>，第 i行表示第 i头牛前面有 A[i]头牛比它低。<br>（注意：因为第 1头牛前面没有牛，所以并没有将它列出）</p>
+<p>输出格式<br>输出包含 n行，每行输出一个整数表示牛的身高。</p>
+<p>第 i行输出第 i头牛的身高。</p>
+<p>数据范围<br>1≤n≤105</p>
+<p>思路：这道题是将每个数字映射到数组的下标，并将其初始化为1，（1表示这个数字未用过，0表示用过）<br>若sum(x)&#x3D;k，说明x为剩余数字中从小到大数第k个数字，若当前这个数字x用过了，则add(x,-1)即可</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 1e5+10;
+
+int a[N];
+int tr[N];
+int ans[N];
+int n;
+
+int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+
+void add(int x,int c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i] += c; 
+&#125;
+
+int sum(int x)&#123;
+    int res = 0;
+    for(int i = x;i;i-=lowbit(i)) res += tr[i];
+    return res;
+&#125;
+
+int main()&#123;
+    cin&gt;&gt;n;
+    for(int i = 2;i&lt;=n;i++)&#123;
+        cin&gt;&gt;a[i];
+    &#125;
+    //将每个数字初始化为1，表示当前这个数字未使用过，后面add(x,-1)表示x这个数已经用过了
+    for(int i = 1;i&lt;=n;i++) tr[i] = lowbit(i);//add(i,1);
+    for(int i = n;i;i--)&#123;
+        int k = a[i] + 1;//ans[i]在剩余的数字中为从小到大第k个数
+        int l = 1,r = n;
+        //二分查找sum(x) = k
+        //在1~x中前缀和为k，表示在剩余的数字中为从小到大第k个数
+        while(l&lt;r)&#123;
+            int mid = l + r &gt;&gt;1;
+            if(sum(mid)&gt;=k)&#123;
+                r = mid;
+            &#125;
+            else l = mid + 1;
+        &#125;
+        ans[i] = r;
+        add(r,-1);
+    &#125;
+    for(int i = 1;i&lt;=n;i++) cout&lt;&lt;ans[i]&lt;&lt;endl;
+&#125;
+</code></pre>
+<p>在完成了分配任务之后，西部 314来到了楼兰古城的西部。</p>
+<p>相传很久以前这片土地上(比楼兰古城还早)生活着两个部落，一个部落崇拜尖刀(V)，一个部落崇拜铁锹(∧)，他们分别用 V 和 ∧ 的形状来代表各自部落的图腾。</p>
+<p>西部 314在楼兰古城的下面发现了一幅巨大的壁画，壁画上被标记出了 n个点，经测量发现这 n个点的水平位置和竖直位置是两两不同的。</p>
+<p>西部 314认为这幅壁画所包含的信息与这 n个点的相对位置有关，因此不妨设坐标分别为 (1,y1),(2,y2),…,(n,yn)，其中 y1∼yn<br>是 1到 n的一个排列。</p>
+<p>西部 314打算研究这幅壁画中包含着多少个图腾。</p>
+<p>如果三个点 (i,yi),(j,yj),(k,yk)满足 1≤i&lt;j&lt;k≤n且 yi&gt;yj,yj&lt;yk，则称这三个点构成 V 图腾;</p>
+<p>如果三个点 (i,yi),(j,yj),(k,yk)满足 1≤i&lt;j&lt;k≤n且 yi&lt;yj,yj&gt;yk，则称这三个点构成 ∧ 图腾;</p>
+<p>西部 314想知道，这 n个点中两个部落图腾的数目。</p>
+<p>因此，你需要编写一个程序来求出 V 的个数和 ∧ 的个数。</p>
+<p>输入格式<br>第一行一个数 n。</p>
+<p>第二行是 n个数，分别代表 y1，y2,…,yn。</p>
+<p>输出格式<br>两个数，中间用空格隔开，依次为 V 的个数和 ∧ 的个数。</p>
+<p>数据范围<br>对于所有数据，n≤200000，且输出答案不会超过 int64。<br>y1∼yn是 1到 n的一个排列。</p>
+<p>思路：从左到右遍历求出左边有多少个数比yi小（大），从右到左遍历右边有多少个数比yi小（大），再将两数相乘即可</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long LL;
+
+const int N = 200010;
+
+int n;
+int a[N],tr[N];
+int gre[N],lower[N];
+
+int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+
+void add(int x,int c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i] +=c;
+&#125;
+
+int sum(int x)&#123;
+    int res = 0;
+    for(int i = x;i;i-=lowbit(i)) res += tr[i];
+    return res;
+&#125;
+
+int main()&#123;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i = 1;i&lt;=n;i++) scanf(&quot;%d&quot;,&amp;a[i]);
+    for(int i = 1;i&lt;=n;i++)&#123;
+        int y = a[i];
+        gre[i] = sum(n) - sum(y);//当前y+1到n有多少个数
+        lower[i] = sum(y-1);//当前1~y-1之间有多少个数
+        add(y,1);//相当于1~y这个区间多了一个数（1~y-1这个区间不受影响），并因此影响之后的区间
+    &#125;
+    
+    memset(tr,0,sizeof tr);
+    
+    LL res1 = 0,res2 = 0;
+    for(int i = n;i;i--)&#123;
+        int y = a[i];
+        res1 += gre[i] * (LL)(sum(n)-sum(y));
+        res2 += lower[i] *(LL)(sum(y-1));
+        add(y,1);
+    &#125;
+    
+    printf(&quot;%lld %lld&quot;,res1,res2);
+&#125;
+</code></pre>
+<p>给定长度为 N的数列 A，然后输入 M行操作指令。</p>
+<p>第一类指令形如 C l r d，表示把数列中第 l∼r个数都加 d。</p>
+<p>第二类指令形如 Q x，表示询问数列中第 x个数的值。</p>
+<p>对于每个询问，输出一个整数表示答案。</p>
+<p>输入格式<br>第一行包含两个整数 N和 M。</p>
+<p>第二行包含 N个整数 A[i]。</p>
+<p>接下来 M行表示 M条指令，每条指令的格式如题目描述所示。</p>
+<p>输出格式<br>对于每个询问，输出一个整数表示答案。</p>
+<p>每个答案占一行。</p>
+<p>数据范围<br>1≤N,M≤105,|d|≤10000,|A[i]|≤109</p>
+<p>思路：利用差分的思想b[i]的前缀和 &#x3D; a[i]（b为差分数组，a为原数组）</p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 1e6+10;
+typedef long long LL;//应该不会爆int,懒得改了
+
+int a[N];
+LL tr[N];
+int n,m;
+
+int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+
+void add(int x,int c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i]+=c;
+&#125;
+
+LL sum(int x)&#123;
+    LL res = 0;
+    for(int i = x;i;i-=lowbit(i)) res+=tr[i];
+    return res;
+&#125;
+
+int main()&#123;
+    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+    for(int i = 1;i&lt;=n;i++)&#123;
+        scanf(&quot;%d&quot;,&amp;a[i]);
+    &#125;
+    for(int i = 1;i&lt;=n;i++)&#123;
+        add(i,a[i] - a[i-1]);
+    &#125;
+    
+    for(int i = 1;i&lt;=m;i++)&#123;
+        char op[2];
+        int l,r,d,x;
+        scanf(&quot;%s&quot;,op);
+        if(op[0]==&#39;Q&#39;)&#123;
+            scanf(&quot;%d&quot;,&amp;x);
+            printf(&quot;%lld\n&quot;,sum(x));
+        &#125;
+        else&#123;
+            scanf(&quot;%d%d%d&quot;,&amp;l,&amp;r,&amp;d);
+            add(l,d);
+            add(r+1,-d);//这里需要注意不要忘
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>给定一个长度为 N的数列 A，以及 M条指令，每条指令可能是以下两种之一：</p>
+<p>C l r d，表示把 A[l],A[l+1],…,A[r]都加上 d。</p>
+<p>Q l r，表示询问数列中第 l∼r个数的和。对于每个询问，输出一个整数表示答案。</p>
+<p>输入格式<br>第一行两个整数 N,M。</p>
+<p>第二行 N个整数 A[i]。</p>
+<p>接下来 M行表示 M条指令，每条指令的格式如题目描述所示。</p>
+<p>输出格式<br>对于每个询问，输出一个整数表示答案。</p>
+<p>每个答案占一行。</p>
+<p>数据范围<br>1≤N,M≤105,|d|≤10000,|A[i]|≤109</p>
+<p>思路：算是上一题的升级版，区间加上一个元素还是利用差分来做,求a[l…r]区间的和，从差分数组的角度想<br>a[1] &#x3D; b[1]<br>a[2] &#x3D; b[1] + b[2]</p>
+<p>……</p>
+<p>a[x] &#x3D; b[1] + b[2] + ….+ b[x]</p>
+<p>因此可以得出公式：sum(ax) &#x3D; sum(bx)<em>(x+1) - sum(bx</em>x) </p>
+<pre><code class="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 100010;
+
+typedef long long LL;
+
+int a[N];
+LL tr1[N];
+LL tr2[N];
+
+int n,m;
+
+int lowbit(int x)&#123;
+    return x &amp; -x;
+&#125;
+
+void add(LL tr[],int x,LL c)&#123;
+    for(int i = x;i&lt;=n;i+=lowbit(i)) tr[i] +=c;
+&#125;
+
+LL sum(LL tr[],int x)&#123;
+    LL res = 0;
+    for(int i = x;i;i-=lowbit(i)) res+=tr[i];
+    return res;
+&#125;
+
+LL prefix_sum(int x)&#123;
+    return sum(tr1,x)*(x+1) - sum(tr2,x);
+&#125;
+
+int main()&#123;
+    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+    for(int i = 1;i&lt;=n;i++)&#123;
+        scanf(&quot;%d&quot;,&amp;a[i]);
+    &#125;
+    
+    for(int i = 1;i&lt;=n;i++)&#123;
+        int b = a[i] - a[i-1];
+        add(tr1,i,b);
+        add(tr2,i,(LL)b*i);
+    &#125;
+    
+   while(m--)&#123;
+        string op;
+        int l,r,d;
+        cin&gt;&gt;op;
+        scanf(&quot;%d%d&quot;,&amp;l,&amp;r);
+        if(op[0]==&#39;Q&#39;)&#123;
+            printf(&quot;%lld\n&quot;,prefix_sum(r)-prefix_sum(l-1));
+        &#125;
+        else&#123;
+            scanf(&quot;%d&quot;,&amp;d);
+            add(tr1,l,d),add(tr2,l,l*d);
+            add(tr1,r+1,-d),add(tr2,r+1,(r+1)*-d);
+        &#125;
+        
+    &#125;
+    system(&quot;pause&quot;);
+&#125;
+</code></pre>
 
     </div>
     
